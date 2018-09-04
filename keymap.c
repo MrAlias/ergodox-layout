@@ -18,6 +18,7 @@ bool log_enable = false;
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   VRSN,
+  LOG,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -108,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 2: Numbers Layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      |      |           |  Ver |      |  / ? |   *  |  - _ |   +  |        |
+ * |        |      |      |      |      |      |  LOG |           |  Ver |      |  / ? |   *  |  - _ |   +  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |  [ { |  7 & |  8 * |  9 ( |   (  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -128,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [NUMB] = LAYOUT_ergodox(
        // left hand
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LOG,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -176,7 +177,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t layer = biton32(layer_state);
 
   uprintf(
-    "{ \"keylog\": true, \"col\": %d, \"row\": %d, \"pressed\": %d, \"layer\": \"%d\" }\n",
+    "{ \"keylog\": true, \"col\": %02d, \"row\": %02d, \"pressed\": %d, \"layer\": \"%d\" }\n",
     record->event.key.row,
     record->event.key.col,
     record->event.pressed,
@@ -191,7 +192,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
       }
       return false;
-      break;
+#if KEYLOGGER_ENABLE
+    case LOG:
+      if (record->event.pressed) {
+        log_enable = !log_enable;
+      }
+      return false;
+#endif
   }
   return true;
 }
