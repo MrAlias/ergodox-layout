@@ -10,9 +10,29 @@
 
 ## Building
 
+Install dependencies.
+
 ```bash
-$ git clone git@github.com:qmk/qmk_firmware.git
+$ sudo pacman -S qmk
+```
+
+Setup QMK.
+
+```bash
+$ git clone git@github.com:MrAlias/qmk_firmware.git
 $ cd qmk_firmware
+$ git remote add upstream git@github.com:qmk/qmk_firmware.git
+
+# Add udev rules.
+$ sudo cp util/udev/50-qmk.rules /etc/udev/rules.d/
+
+# Run QMK setup.
+$ qmk setup
+```
+
+Add keymap and buil.
+
+```bash
 $ git clone git@github.com:MrAlias/ergodox-layout.git keyboards/hotdox/keymaps/MrAlias
 $ make keyboard=hotdox keymap=MrAlias
 ```
