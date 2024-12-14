@@ -13,6 +13,6 @@
 ```bash
 $ git clone git@github.com:qmk/qmk_firmware.git
 $ cd qmk_firmware
-$ git clone git@github.com:MrAlias/ergodox-layout.git keyboards/ergodox_ez/keymaps/MrAlias
-$ make keyboard=ergodox_ez keymap=MrAlias
+$ git clone git@github.com:MrAlias/ergodox-layout.git keyboards/hotdox/keymaps/MrAlias
+$ make keyboard=hotdox keymap=MrAlias
 ```
